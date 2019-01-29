@@ -18,7 +18,8 @@ class Robot
   end
 
   def move
-    if (x>=0 && x<4) || (y>=0 && y<4)
+    current_position = [@x, @y, @f]
+      # if (x>=0 && x<4) || (y>=0 && y<4)
       if @f == "NORTH"
         @y += 1
       elsif @f == "EAST"
@@ -28,8 +29,13 @@ class Robot
       else
         @x -= 1
       end
-    end
     
+    if @x < 0  || @y < 0 
+      @x = current_position[0]
+      @y = current_position[1]
+      @f = current_position[2]
+    end
+
   end
 
   def left

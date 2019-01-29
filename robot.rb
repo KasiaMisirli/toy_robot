@@ -10,21 +10,26 @@ class Robot
   end
 
   def place(x,y,f)
-    @x = x
-    @y = y
-    @f = f
+    if (x>=0 && x<5) && (y>=0 && y<5)
+      @x = x
+      @y = y
+      @f = f
+    end
   end
 
   def move
-    if @f == "NORTH"
-      @y += 1
-    elsif @f == "EAST"
-      @x += 1
-    elsif @f == "SOUTH"
-      @y -= 1
-    else
-      @x -= 1
+    if (x>=0 && x<4) || (y>=0 && y<4)
+      if @f == "NORTH"
+        @y += 1
+      elsif @f == "EAST"
+        @x += 1
+      elsif @f == "SOUTH"
+        @y -= 1
+      else
+        @x -= 1
+      end
     end
+    
   end
 
   def left

@@ -29,5 +29,19 @@ RSpec.describe Robot do
     expect(@a.report).to eq("Robot is currently at (0, 0) and it's facing EAST")
   end
 
+  it 'ignores off board moves' do
+    @a.place(5,2,"NORTH")
+    expect(@a.report).to eq("Robot is currently at (0, 0) and it's facing NORTH")
+  end
 
+  it 'ignores moves off board' do
+    @a.place(3,4,"EAST")
+    @a.move
+    expect(@a.report).to eq("Robot is currently at (4, 4) and it's facing EAST")
+    @a.move
+    expect(@a.report).to eq("Robot is currently at (4, 4) and it's facing EAST")
+    @a.place(0,0,"WEST")
+    @a.move
+    expect(@a.report).to eq("Robot is currently at (0, 0) and it's facing WEST")
+  end
 end

@@ -1,4 +1,5 @@
-
+require_relative './grid'
+require 'pry'
 
 class Robot
   attr_reader :x, :y, :f
@@ -10,32 +11,39 @@ class Robot
   end
 
   def place(x,y,f)
-    if (x>=0 && x<5) && (y>=0 && y<5)
-      @x = x
-      @y = y
-      @f = f
+    @x = x
+    @y = y
+    @f = f
+    [@x, @y, @f]
+  end
+
+  def next_position
+    temp_x = @x
+    temp_y = @y
+    
+    if @f == "NORTH"
+      temp_y += 1
+    elsif @f == "EAST"
+      temp_x += 1
+    elsif @f == "SOUTH"
+      temp_y -= 1
+    else
+      temp_x -= 1
     end
+
+    [temp_x, temp_y]
   end
 
   def move
-    current_position = [@x, @y, @f]
-      # if (x>=0 && x<4) || (y>=0 && y<4)
-      if @f == "NORTH"
-        @y += 1
-      elsif @f == "EAST"
-        @x += 1
-      elsif @f == "SOUTH"
-        @y -= 1
-      else
-        @x -= 1
-      end
-    
-    if @x < 0  || @y < 0 
-      @x = current_position[0]
-      @y = current_position[1]
-      @f = current_position[2]
+    if @f == "NORTH"
+      @y += 1
+    elsif @f == "EAST"
+      @x += 1
+    elsif @f == "SOUTH"
+      @y -= 1
+    else
+      @x -= 1
     end
-
   end
 
   def left
@@ -48,7 +56,6 @@ class Robot
     else
       @f = "NORTH"
     end
-
   end
 
   def right
@@ -66,7 +73,4 @@ class Robot
   def report
     "Robot is currently at (#{@x}, #{@y}) and it's facing #{@f}"
   end
-
-  
 end
-

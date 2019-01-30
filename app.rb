@@ -1,30 +1,47 @@
 require './robot'
+require './grid'
 require 'pry'
 
 puts "Type in filename"
-file_name = gets.chomp
 
-def translate(line)
-  if line.include? "PLACE"
-    values = line.split(' ')[1].split(',')
-    @robot.place(values[0].to_i,values[1].to_i,values[2])
-    p @robot.report
+class App
+  def initialize
+    @file_name = "commands.txt"
+    @robot = Robot.new
+    @grid = Grid.new
+  end 
+
+  def open_file(file_name)
+    File.open("#{file_name}", "r") do |f|
+      f.each_line do |line|
+        translate(line)
+      end
+    end
   end
-end
 
-@robot = Robot.new
-
-File.open("#{file_name}", "r") do |f|
-  f.each_line do |line|
-    # puts line
-    translate(line)
-    
-    # binding.pry
-    # how to get it to run things in robot.rb??
+  def translate(line)
+    if line.include? "PLACE"
+      x,y,f = line.split(' ')[1].split(',')
+      x = x.to_i
+      y= y.to_i
+      if @grid.valid_move?(x,y)
+        @robot.place(x,y,f)
+      end
+    elsif line.include? "MOVE"
+      x,y = @robot.next_position
+      if @grid.valid_move?(x,y)
+        @robot.move
+      end
+    elsif line.include? "LEFT"
+      @robot.left
+    elsif line.include? "RIGHT"
+      @robot.right
+    elsif line.include? "REPORT"
+      @robot.report
+    end
   end
+
 end
-
-
 
 
 

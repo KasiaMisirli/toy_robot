@@ -7,10 +7,6 @@ RSpec.describe App do
     @app = App.new
   end
 
-  it "opens file" do
-    expect(@app.open_file("commands.txt")).to eq("file opened :p")
-  end
-
   it "translates PLACE command" do
     line = "PLACE 1,2,NORTH"
     expect(@app.translate(line)).to eq([1,2,"NORTH"])

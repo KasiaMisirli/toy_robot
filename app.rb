@@ -1,34 +1,65 @@
 require './robot'
+require './grid'
 require 'pry'
 
-puts "Type in filename"
-file_name = gets.chomp
+class App
+  def initialize
+    # @file_name = "commands.txt"
+    @robot = Robot.new
+    @grid = Grid.new
+  end 
 
-def translate(line)
-  if line.include? "PLACE"
-    values = line.split(' ')[1].split(',')
-    @robot.place(values[0].to_i,values[1].to_i,values[2])
-    p @robot.report
+  def open_file(file_name)
+    File.open("#{file_name}", "r") do |f|
+      f.each_line do |line|
+        translate(line)
+      end
+    end
+    "file opened :p"
   end
+
+  # def open_file *file_name
+  #   # file_name = ARGV
+  #   File.open("#{file_name}", "r") do |f|
+  #     f.each_line do |line|
+  #       translate(line)
+  #     end
+  #   end
+  #   "file opened :p"
+  # end 
+
+
+  # TODO: Need to ignore commands if PLACE hasn't been called.
+
+  def translate(line)
+    if line.include? "PLACE"
+      x,y,f = line.split(' ')[1].split(',')
+      x = x.to_i
+      y= y.to_i
+      if @grid.valid_move?(x,y)
+        @robot.place(x,y,f)
+      end
+      @robot.current_position
+    elsif line.include? "MOVE"
+      x,y = @robot.next_position
+      if @grid.valid_move?(x,y)
+        @robot.move
+      end
+      @robot.current_position
+    elsif line.include? "LEFT"
+      @robot.left
+    elsif line.include? "RIGHT"
+      @robot.right
+    elsif line.include? "REPORT"
+      @robot.report
+    end
+  end
+
 end
 
-@robot = Robot.new
+a = App.new
+a.open_file('commands.txt')
 
-File.open("#{file_name}", "r") do |f|
-  f.each_line do |line|
-    # puts line
-    translate(line)
-    
-    # binding.pry
-    # how to get it to run things in robot.rb??
-  end
-end
-
-
-
-
-
-# Any movement that would result in the robot falling from the table is prevented, however further valid movement commands are still allowed.
 
 # The file is assumed to have ASCII encoding. It is assumed that the PLACE command has only one space, that is PLACE 1, 2, NORTH is an invalid command. All commands must be in upcase, all lower and mixed case commands will be ignored.
 

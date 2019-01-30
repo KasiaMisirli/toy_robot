@@ -14,7 +14,7 @@ class Robot
     @x = x
     @y = y
     @f = f
-    [@x, @y, @f]
+    current_position
   end
 
   def next_position
@@ -34,6 +34,10 @@ class Robot
     [temp_x, temp_y]
   end
 
+  def current_position
+    [@x, @y, @f]
+  end
+
   def move
     if @f == "NORTH"
       @y += 1
@@ -44,6 +48,7 @@ class Robot
     else
       @x -= 1
     end
+    current_position
   end
 
   def left
@@ -56,6 +61,7 @@ class Robot
     else
       @f = "NORTH"
     end
+    current_position
   end
 
   def right
@@ -68,9 +74,12 @@ class Robot
     else
       @f = "NORTH"
     end
+    current_position
   end
 
   def report
-    "Robot is currently at (#{@x}, #{@y}) and it's facing #{@f}"
+    report = "Robot is currently at (#{@x}, #{@y}) and it's facing #{@f}"
+    puts report
+    report
   end
 end

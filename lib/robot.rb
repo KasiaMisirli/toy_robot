@@ -19,18 +19,16 @@ class Robot
   end
 
   def next_position
-    temp_x = @x
-    temp_y = @y
-    if @f == 'NORTH'
-      temp_y += 1
-    elsif @f == 'EAST'
-      temp_x += 1
-    elsif @f == 'SOUTH'
-      temp_y -= 1
-    else
-      temp_x -= 1
+    case f
+    when 'NORTH'
+      [x, y + 1]
+    when 'SOUTH'
+      [x, y - 1]
+    when 'EAST'
+      [x + 1, y]
+    when 'WEST'
+      [x - 1, y]
     end
-    [temp_x, temp_y]
   end
 
   def current_position
@@ -51,28 +49,31 @@ class Robot
   end
 
   def left
-    if @f == 'NORTH'
-      @f = 'WEST'
-    elsif @f == 'WEST'
-      @f = 'SOUTH'
-    elsif @f == 'SOUTH'
-      @f = 'WEST'
-    else
-      @f = 'NORTH'
-    end
+    @f = case @f
+         when 'NORTH'
+           'WEST'
+         when 'WEST'
+           'SOUTH'
+         when 'SOUTH'
+           'EAST'
+         when 'EAST'
+           'NORTH'
+         end
     current_position
   end
 
   def right
-    if @f == 'NORTH'
-      @f = 'EAST'
-    elsif @f == 'EAST'
-      @f = 'SOUTH'
-    elsif @f == 'SOUTH'
-      @f = 'WEST'
-    else
-      @f = 'NORTH'
-    end
+    @f = case @f
+         when 'NORTH'
+           'EAST'
+         when 'EAST'
+           'SOUTH'
+         when 'SOUTH'
+           'WEST'
+         when 'WEST'
+           'NORTH'
+         end
+      
     current_position
   end
 
